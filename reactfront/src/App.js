@@ -11,7 +11,7 @@ function App() {
     console.log(value);
     const minValue=value.length >3;
     const maxValue=value.length < 10;
-    const onliLet = /^[a-zA-Z\s]*$/g.test(value);//PARA QUE SOLO HAYA LETRAS
+    const onliLet = /^[a-zA-Z\s]*$/g.test(value);//PARA QUE SOLO HAYA
     console.log("Min:", minValue);
     console.log("Max:", maxValue);
     console.log("onliLet:", onliLet);  
