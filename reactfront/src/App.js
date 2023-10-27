@@ -6,35 +6,54 @@ import Form from 'react-bootstrap/Form';
 function App() {
   const [nombre , setNombre]= useState("")
   const [numberError,setNumericError]= useState("")
-  const [email,setEmail]= useState("")
-  const [emailError,setErrorEmail]= useState("")
-  const [password,setPassword]= useState("")
-  const [errorPassword,setErrorPassword]= useState("")
+  const [dni,setDni]= useState("")
+  const [dniError,setDniError]= useState("")
+  const [amount,setAmonunt]= useState("")
+  const [amountError,setAmonuntError]= useState("")
+  const [price,setPrice]= useState("")
+  const [priceError,setPriceError]= useState("")
 
-  const validPassword= (e) => {
-    const value= e.target.value;
-    const validPassword=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
-
-    if (!validPassword.test(value)){
-      setErrorPassword(1);
-    }else{
-      setErrorPassword(0);
-    }
-    setPassword(value);
-
-  }
-  const typeEmail= (e) =>{
+  const precio=(e)=>{
     const value=e.target.value;
-    const validEmail=/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+    const typePrice= /^[0-9,$]*$/.test(value);
 
-    if (!validEmail.test(value)) { // Cambiado a !validEmail.test(value)
-      setErrorEmail(1); // Correo no válido
-    } else {
-      setErrorEmail(0); // Correo válido
+    if (!typePrice){
+      setPriceError(1)
+    }else{
+      setPriceError(0)
     }
-    setEmail(value)
-
+    setPrice(value)
   }
+
+  const cantidad =(e)=>{
+    const value=e.target.value;
+    const entero = /^\d+$/.test(value);
+    const typeCant= /^[0-9,$]*$/.test(value);
+    
+    if (typeCant===false){
+      setAmonuntError(1)
+    }else if(!entero){
+      setAmonuntError(2)
+    }else {
+      setAmonuntError(0)
+    }
+    setAmonunt(value)
+  }
+
+ const validDni =(e) =>{
+   const value=e.target.value;
+   const lengtdni=value.length===8;
+   const dniValid= /^[0-9,$]*$/.test(value);
+
+   if(dniValid===false){
+     setDniError(1)
+   }else if(!lengtdni){
+     setDniError(2)
+   }else{
+     setDniError(0)
+   }
+   setDni(value);
+ }
   const cambiarNombre=(e) =>{
     const value=e.target.value;
     console.log(value);
@@ -58,21 +77,20 @@ function App() {
 
     const guardarClick = () => {
       
-      alert("Este es mi estado local",nombre,email);
+      alert("Este es mi estado local",nombre);
     }
 
       return (
         <div className='App'>
            <header className="App-header">
            <div className="alert alert-success" role="alert">
-          <h4 className="alert-heading">MI PRIMER SISTEMA CON REACT</h4>
+          <h4 className="alert-heading">Formulario Ventas</h4>
         </div>
            
            <div className="card-body">
 
-          <h2>Mi Formulario</h2>
+          <h2>Datos del Cliente</h2>
           <Form.Group className="mb-3" >
-            <Form.Label>Nombre </Form.Label>
             <Form.Control  id="nombre" name="nombre" value={nombre}
             onChange={cambiarNombre} 
             type="text" placeholder="Ingrese su nombre" />
@@ -109,42 +127,69 @@ function App() {
           
           </Form.Group>
           <Form.Group className="mb-3" >
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="email" id="email" placeholder="Ingrese email" value={email} 
-            onChange={typeEmail}/>
-            
-
-            {emailError === 1 && (
-
+            <Form.Control type="text" placeholder="Ingrese Dni" value={dni}
+            onChange={validDni} />
+            {dniError===1 &&(
                 <label className="text_error">
 
-                  Ingrese un correo valido
+                Solo se aceptan números
 
                 </label>
+            )}
+            {dniError===2 &&(
+                <label className="text_error">
 
-                )}
+                Dni debe tener 8 caracteres
+                
+
+                </label>
+            )}
+            
+            
+            <h2>Producto</h2>
+            
           </Form.Group>
     
           <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password"  value={password}
-             onChange={validPassword}/>
-            {errorPassword === 1 && (
+            <Form.Select aria-label="Default select example">
+                  <option value="none" selected disabled>Escoja un Producto</option>
+                  <option value="1">Television</option>
+                  <option value="2">Refrigeradora</option>
+                  <option value="3">Lavadora</option>
+            </Form.Select>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Control type="text" placeholder="Cantidad" value={amount}
+               onChange={cantidad}/>
+                {amountError===1 &&(
+                  <label className="text_error">
 
-              <label className="text_error">
+                    Solo se acepta numeros
 
-                  <p>Al menos 8 caracteres de longitud</p>
-                  <p>Al menos una letra mayúscula.</p>
-                  <p>Al menos una letra minúscula.</p>
-                  <p>Al menos un dígito.</p>
-                  <p>Puede contener caracteres especiales.</p>
-
-              </label>
-
+                  </label>
               )}
+            {amountError===2 &&(
+                <label className="text_error">
+
+                  Cantidad debe ser entero                
+
+                </label>
+            )}
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Control type="text" placeholder="Precio" value={price}
+               onChange={precio}/>
+                {priceError===1 &&(
+                  <label className="text_error">
+
+                    Solo se acepta numeros
+
+                  </label>
+              )}
+           
           </Form.Group>
 
-          <Button  disabled={ emailError>0 || errorPassword>0  || numberError>0  } onClick={guardarClick} variant="primary">Primary</Button>{' '}
+          <Button  disabled={ priceError>0 || numberError>0 ||dniError>0 ||amountError>0} onClick={guardarClick} variant="primary">Guardar</Button>{' '}
           
           </div>
           </header>
