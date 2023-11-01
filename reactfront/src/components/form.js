@@ -1,7 +1,7 @@
 
 import React,{useState} from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 
 function Formulario({titleName, labelName, buttonName}){
@@ -88,7 +88,7 @@ function Formulario({titleName, labelName, buttonName}){
             </div>
             <div className="card-body">
             <h2>{labelName}</h2>
-            <Form.Group className="mb-3" >
+            <FormControl fullWidth>
             <TextField className='input' sx={{ backgroundColor: 'white' }} id="outlined-basic" label="NOMBRE" color="success" variant="outlined"  value={nombre}
               onChange={cambiarNombre} 
               type="text"/>
@@ -112,8 +112,8 @@ function Formulario({titleName, labelName, buttonName}){
   
                   )}
             
-            </Form.Group>
-            <Form.Group className="mb-3" >
+            </FormControl>
+            <FormControl fullWidth>
             <TextField className='input'sx={{ backgroundColor: 'white' }} id="outlined-basic"  color="success" label="DNI" variant="outlined"  value={dni}
               onChange={validDni}  />
               {dniError===1 &&(
@@ -130,8 +130,8 @@ function Formulario({titleName, labelName, buttonName}){
               )}
               <h2>Producto</h2>
               
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            </FormControl>
+            <FormControl fullWidth>
             <TextField className='input' sx={{ backgroundColor: 'white' }} color="success"id="outlined-basic" label="CANTIDAD" variant="outlined"  value={amount}
                  onChange={cantidad}/>
                   {amountError===1 &&(
@@ -148,8 +148,8 @@ function Formulario({titleName, labelName, buttonName}){
   
                   </label>
               )}
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            </FormControl>
+            <FormControl fullWidth>
             <TextField className='input' sx={{ backgroundColor: 'white' }} id="outlined-basic" color="success" label="PRECIO" variant="outlined"  value={price}
                  onChange={precio}/>
                   {priceError===1 &&(
@@ -160,9 +160,12 @@ function Formulario({titleName, labelName, buttonName}){
                     </label>
                 )}
              
-            </Form.Group>
-  
-            <Button  disabled={ priceError>0 || numberError>0 ||dniError>0 ||amountError>0} onClick={guardarClick} variant="primary">{buttonName}</Button>{' '}
+            </FormControl>
+            <Button variant="contained" color="success"
+             disabled={ priceError>0 || numberError>0 ||dniError>0 ||amountError>0} 
+             onClick={guardarClick} >
+               {buttonName}
+              </Button>
             
             </div>
             </header>
