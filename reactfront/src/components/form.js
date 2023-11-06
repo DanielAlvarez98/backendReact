@@ -71,25 +71,25 @@ function Formulario({titleName, labelName, buttonName}){
     const cambiarNombre=(e) =>{
       const value=e.target.value;
       console.log(value);
-      const minValue=value.length >3;
-      const maxValue=value.length < 10;
+      const minValue=value.length >=3;
+      const maxValue=value.length <= 10;
       const onliLet = /^[a-zA-Z\s]*$/g.test(value);//PARA QUE SOLO HAYA LETRAS
       
       // if(onliLet===false) {
       //   setNumericError(1);
       // }else if(!minValue) {
       //   setNumericError(2);
+      // }else if(!maxValue) {
+      //   setNumericError(3)
       // }else{
-      //   setNumericError(3);
+      //   setNumericError(0);
       // }
-  
-      // if(onliLet===true && minValue && maxValue) {
-      //   setNumericError(0)
-      // }
+
       // setNombre(value);
       
-      setNumericError(onliLet ? minValue && maxValue ? 0 : 3 : !minValue ? 2: 1);
+      setNumericError(!onliLet ? 1 : !minValue ? 2 : !maxValue ? 3 : 0);
       setNombre(value);
+
     //   Si onliLet es verdadero (true), entonces se verifica si tanto minValue 
     //   como maxValue son verdaderos (true). Si es así, el valor de la expresión
     //   condicional es 0 (sin errores). De lo contrario, si alguna de las condiciones no se cumple, el valor es 3.
