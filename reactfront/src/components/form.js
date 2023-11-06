@@ -18,12 +18,16 @@ function Formulario({titleName, labelName, buttonName}){
       const value=e.target.value;
       const typePrice= /^[0-9,$]*$/.test(value);
   
-      if (!typePrice){
-        setPriceError(1)
-      }else{
-        setPriceError(0)
-      }
-      setPrice(value)
+      // if (!typePrice){
+      //   setPriceError(1)
+      // }else{
+      //   setPriceError(0)
+      // }
+      // setPrice(value)
+
+      setPriceError(!typePrice ? 1 : 0);
+      setPrice(value);
+
     }
   
     const cantidad =(e)=>{
@@ -31,29 +35,38 @@ function Formulario({titleName, labelName, buttonName}){
       const entero = /^\d+$/.test(value);
       const typeCant= /^[0-9,$]*$/.test(value);
       
-      if (typeCant===false){
-        setAmonuntError(1)
-      }else if(!entero){
-        setAmonuntError(2)
-      }else {
-        setAmonuntError(0)
-      }
-      setAmonunt(value)
+      // if (typeCant===false){
+      //   setAmonuntError(1)
+      // }else if(!entero){
+      //   setAmonuntError(2)
+      // }else {
+      //   setAmonuntError(0)
+      // }
+      // setAmonunt(value)
+
+      setAmonuntError(typeCant === false ? 1 : !entero ? 2 : 0);
+      setAmonunt(value);
     }
+    
+
   
    const validDni =(e) =>{
      const value=e.target.value;
-     const lengtdni=value.length===8;
+     const lengtDni=value.length===8;
      const dniValid= /^[0-9,$]*$/.test(value);
   
-     if(dniValid===false){
-       setDniError(1)
-     }else if(!lengtdni){
-       setDniError(2)
-     }else{
-       setDniError(0)
-     }
+    //  if(dniValid===false){
+    //    setDniError(1)
+    //  }else if(!lengtDni){
+    //    setDniError(2)
+    //  }else{
+    //    setDniError(0)
+    //  }
+    //  setDni(value);
+
+     setDniError(dniValid===false ? 1: !lengtDni ? 2:0)
      setDni(value);
+
    }
     const cambiarNombre=(e) =>{
       const value=e.target.value;
@@ -62,18 +75,30 @@ function Formulario({titleName, labelName, buttonName}){
       const maxValue=value.length < 10;
       const onliLet = /^[a-zA-Z\s]*$/g.test(value);//PARA QUE SOLO HAYA LETRAS
       
-      if(onliLet===false) {
-        setNumericError(1);
-      }else if(!minValue) {
-        setNumericError(2);
-      }else{
-        setNumericError(3);
-      }
+      // if(onliLet===false) {
+      //   setNumericError(1);
+      // }else if(!minValue) {
+      //   setNumericError(2);
+      // }else{
+      //   setNumericError(3);
+      // }
   
-      if(onliLet===true && minValue && maxValue) {
-        setNumericError(0)
-      }
+      // if(onliLet===true && minValue && maxValue) {
+      //   setNumericError(0)
+      // }
+      // setNombre(value);
+      
+      setNumericError(onliLet ? minValue && maxValue ? 0 : 3 : !minValue ? 2: 1);
       setNombre(value);
+    //   Si onliLet es verdadero (true), entonces se verifica si tanto minValue 
+    //   como maxValue son verdaderos (true). Si es así, el valor de la expresión
+    //   condicional es 0 (sin errores). De lo contrario, si alguna de las condiciones no se cumple, el valor es 3.
+
+    // Si onliLet es falso (false), entonces se verifica si minValue es falso (false). Si es así, el valor de la 
+    // expresión condicional es 2. De lo contrario, si minValue es verdadero (true), el valor es 1.
+
+      
+
     }
   
       const guardarClick = () => {
