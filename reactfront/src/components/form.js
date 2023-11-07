@@ -3,6 +3,9 @@ import React,{useState} from 'react';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
+import {Link} from 'react-router-dom';
+
+
 
 function Formulario({titleName, labelName, buttonName}){
     const [nombre , setNombre]= useState("")
@@ -49,7 +52,7 @@ function Formulario({titleName, labelName, buttonName}){
     }
     
 
-  
+    
    const validDni =(e) =>{
      const value=e.target.value;
      const lengtDni=value.length===8;
@@ -123,6 +126,9 @@ function Formulario({titleName, labelName, buttonName}){
 
         return (
           <div className='container'>
+          
+            <Link to='/' className='btn btn-success  btn-lg mt-2 mb-2 text-white'>Atras</Link>
+
             <header className="App-header">
              <div className="title_header" role="alert">
              <h4 className="title">{titleName}</h4>
