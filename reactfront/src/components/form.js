@@ -105,6 +105,22 @@ function Formulario({titleName, labelName, buttonName}){
         
         alert("Este es mi estado local",nombre);
       }
+      const errorMessages = {
+        1: "El nombre solo se puede incluir letras",
+        2: "El nombre mínimo es 3 caracteres",
+        3: "El nombre máximo es 10 caracteres",
+      };
+
+      const messageDni={
+        1: "Solo se aceptan números",
+        2:"Dni debe tener 8 caracteres",
+      };
+
+      const messageCantidad={
+        1: "Solo se aceptan números",
+        2:" Cantidad debe ser entero ",
+      };
+
         return (
           <div className='container'>
             <header className="App-header">
@@ -117,41 +133,21 @@ function Formulario({titleName, labelName, buttonName}){
             <TextField className='input' sx={{ backgroundColor: 'white' }} id="outlined-basic" label="NOMBRE" color="success" variant="outlined"  value={nombre}
               onChange={cambiarNombre} 
               type="text"/>
-                 {numberError === 1 && (
-                    <label className="text_error">
-                    El nombre solo se puede incluir letras
-                    </label>
-                      )}
-                      {numberError === 2 && (
-                  <label className="text_error">
-                    El nombre minimo es 3 caracteres
-                  </label>
-                  )}
-                  {numberError === 3 && (
-  
-                  <label className="text_error">
-  
-                    El nombre maximo es 10 caracteres
-  
-                  </label>
-  
-                  )}
+              
+              {numberError > 0 && (
+              <label className="text_error">
+                {errorMessages[numberError]}
+              </label>
+              )}
             
             </FormControl>
             <FormControl fullWidth>
             <TextField className='input'sx={{ backgroundColor: 'white' }} id="outlined-basic"  color="success" label="DNI" variant="outlined"  value={dni}
               onChange={validDni}  />
-              {dniError===1 &&(
+              {dniError>0 &&(
                   <label className="text_error">
-  
-                  Solo se aceptan números
-  
-                  </label>
-              )}
-              {dniError===2 &&(
-                  <label className="text_error">
-                  Dni debe tener 8 caracteres
-                  </label>
+                  {messageDni[dniError]}
+                </label>
               )}
               <h2>Producto</h2>
               
@@ -159,29 +155,20 @@ function Formulario({titleName, labelName, buttonName}){
             <FormControl fullWidth>
             <TextField className='input' sx={{ backgroundColor: 'white' }} color="success"id="outlined-basic" label="CANTIDAD" variant="outlined"  value={amount}
                  onChange={cantidad}/>
-                  {amountError===1 &&(
-                    <label className="text_error">
-  
-                      Solo se acepta numeros
-  
-                    </label>
-                )}
-              {amountError===2 &&(
+                 {amountError>0 &&(
                   <label className="text_error">
-  
-                    Cantidad debe ser entero                
-  
-                  </label>
+                  {messageCantidad[amountError]}
+                </label>
               )}
             </FormControl>
             <FormControl fullWidth>
             <TextField className='input' sx={{ backgroundColor: 'white' }} id="outlined-basic" color="success" label="PRECIO" variant="outlined"  value={price}
                  onChange={precio}/>
-                  {priceError===1 &&(
+                  {priceError > 0&&(
                     <label className="text_error">
   
-                      Solo se acepta numeros
-  
+                    {messageCantidad[priceError]}
+
                     </label>
                 )}
              
