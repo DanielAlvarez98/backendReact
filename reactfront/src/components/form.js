@@ -1,9 +1,10 @@
 
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import {Link} from 'react-router-dom';
+import Container from '@mui/material/Container';
 
 
 
@@ -16,6 +17,18 @@ function Formulario({titleName, labelName, buttonName}){
     const [amountError,setAmonuntError]= useState("")
     const [price,setPrice]= useState("")
     const [priceError,setPriceError]= useState("")
+
+    const[isLoading, setIsLoading]=useState(true)
+    const[imageUrl,setImageUrl]= useState(null)
+
+    useEffect(()=>{
+      fetch("https://dog.ceo/api/breeds/image/random")
+      .then((response)=>response.json())
+      .then((data)=>{
+        setImageUrl(data.message);
+        setIsLoading(false);
+      });
+    },[]);
   
     const precio=(e)=>{
       const value=e.target.value;
@@ -92,7 +105,7 @@ function Formulario({titleName, labelName, buttonName}){
       
       setNumericError(!onliLet ? 1 : !minValue ? 2 : !maxValue ? 3 : 0);
       setNombre(value);
-
+    }
     //   Si onliLet es verdadero (true), entonces se verifica si tanto minValue 
     //   como maxValue son verdaderos (true). Si es así, el valor de la expresión
     //   condicional es 0 (sin errores). De lo contrario, si alguna de las condiciones no se cumple, el valor es 3.
@@ -100,9 +113,7 @@ function Formulario({titleName, labelName, buttonName}){
     // Si onliLet es falso (false), entonces se verifica si minValue es falso (false). Si es así, el valor de la 
     // expresión condicional es 2. De lo contrario, si minValue es verdadero (true), el valor es 1.
 
-      
-
-    }
+  
   
       const guardarClick = () => {
         
@@ -125,7 +136,7 @@ function Formulario({titleName, labelName, buttonName}){
       };
 
         return (
-          <div className='container'>
+          <Container  maxWidth="sm">
           
             <Link to='/' className='btn btn-success  btn-lg mt-2 mb-2 text-white'>Atras</Link>
 
@@ -159,6 +170,7 @@ function Formulario({titleName, labelName, buttonName}){
               
             </FormControl>
             <FormControl fullWidth>
+           
             <TextField className='input' sx={{ backgroundColor: 'white' }} color="success"id="outlined-basic" label="CANTIDAD" variant="outlined"  value={amount}
                  onChange={cantidad}/>
                  {amountError>0 &&(
@@ -170,7 +182,7 @@ function Formulario({titleName, labelName, buttonName}){
             <FormControl fullWidth>
             <TextField className='input' sx={{ backgroundColor: 'white' }} id="outlined-basic" color="success" label="PRECIO" variant="outlined"  value={price}
                  onChange={precio}/>
-                  {priceError > 0&&(
+                  {priceError > 0 &&(
                     <label className="text_error">
   
                     {messageCantidad[priceError]}
@@ -186,9 +198,12 @@ function Formulario({titleName, labelName, buttonName}){
               </Button>
             
             </div>
+            <div>
+              <img src={imageUrl} />
+            </div>
             </header>
   
-            </div>
+            </Container>
   
         
             )
