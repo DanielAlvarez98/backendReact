@@ -3,7 +3,6 @@ import React,{useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import {Link} from 'react-router-dom';
 import Container from '@mui/material/Container';
 
 
@@ -20,26 +19,37 @@ function Formulario({titleName, labelName, buttonName}){
 
     const[isLoading, setIsLoading]=useState(true)
     const[imageUrl,setImageUrl]= useState(null)
-
-    useEffect(()=>{
-      fetch("https://dog.ceo/api/breeds/image/random")
-      .then((response)=>response.json())
-      .then((data)=>{
-        setImageUrl(data.message);
-        setIsLoading(false);
-      });
-    },[]);
+    const [contador, setContador] = useState(0);
+  
+    useEffect(() => {
+      const obtenerNuevaImagen = () => {
+        // Agrega un parámetro único a la URL para evitar la caché
+        const timestamp = new Date().getTime();
+        const url = `https://dog.ceo/api/breeds/image/random?timestamp=${timestamp}`;
+  
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            setImageUrl(data.message);
+            setIsLoading(false);
+          });
+      };
+      // Obtener la primera imagen al cargar el componente
+      obtenerNuevaImagen();
+      // Cambiar la imagen cada 5000 milisegundos (5 segundos)
+      const intervalo = setInterval(() => {
+        setContador((prevContador) => prevContador + 1);
+        obtenerNuevaImagen();
+      }, 3000);
+      // Limpiar el intervalo cuando el componente se desmonta
+      return () => clearInterval(intervalo);
+    }, [contador]);
+  
   
     const precio=(e)=>{
       const value=e.target.value;
       const typePrice= /^[0-9,$]*$/.test(value);
   
-      // if (!typePrice){
-      //   setPriceError(1)
-      // }else{
-      //   setPriceError(0)
-      // }
-      // setPrice(value)
 
       setPriceError(!typePrice ? 1 : 0);
       setPrice(value);
@@ -50,15 +60,6 @@ function Formulario({titleName, labelName, buttonName}){
       const value=e.target.value;
       const entero = /^\d+$/.test(value);
       const typeCant= /^[0-9,$]*$/.test(value);
-      
-      // if (typeCant===false){
-      //   setAmonuntError(1)
-      // }else if(!entero){
-      //   setAmonuntError(2)
-      // }else {
-      //   setAmonuntError(0)
-      // }
-      // setAmonunt(value)
 
       setAmonuntError(typeCant === false ? 1 : !entero ? 2 : 0);
       setAmonunt(value);
@@ -71,14 +72,6 @@ function Formulario({titleName, labelName, buttonName}){
      const lengtDni=value.length===8;
      const dniValid= /^[0-9,$]*$/.test(value);
   
-    //  if(dniValid===false){
-    //    setDniError(1)
-    //  }else if(!lengtDni){
-    //    setDniError(2)
-    //  }else{
-    //    setDniError(0)
-    //  }
-    //  setDni(value);
 
      setDniError(dniValid===false ? 1: !lengtDni ? 2:0)
      setDni(value);
@@ -90,28 +83,11 @@ function Formulario({titleName, labelName, buttonName}){
       const minValue=value.length >=3;
       const maxValue=value.length <= 10;
       const onliLet = /^[a-zA-Z\s]*$/g.test(value);//PARA QUE SOLO HAYA LETRAS
-      
-      // if(onliLet===false) {
-      //   setNumericError(1);
-      // }else if(!minValue) {
-      //   setNumericError(2);
-      // }else if(!maxValue) {
-      //   setNumericError(3)
-      // }else{
-      //   setNumericError(0);
-      // }
 
-      // setNombre(value);
       
       setNumericError(!onliLet ? 1 : !minValue ? 2 : !maxValue ? 3 : 0);
       setNombre(value);
     }
-    //   Si onliLet es verdadero (true), entonces se verifica si tanto minValue 
-    //   como maxValue son verdaderos (true). Si es así, el valor de la expresión
-    //   condicional es 0 (sin errores). De lo contrario, si alguna de las condiciones no se cumple, el valor es 3.
-
-    // Si onliLet es falso (false), entonces se verifica si minValue es falso (false). Si es así, el valor de la 
-    // expresión condicional es 2. De lo contrario, si minValue es verdadero (true), el valor es 1.
 
   
   
@@ -136,9 +112,9 @@ function Formulario({titleName, labelName, buttonName}){
       };
 
         return (
-          <Container  maxWidth="sm">
+          <Container  maxWidth="md">
           
-            <Link to='/' className='btn btn-success  btn-lg mt-2 mb-2 text-white'>Atras</Link>
+           
 
             <header className="App-header">
              <div className="title_header" role="alert">
@@ -199,7 +175,11 @@ function Formulario({titleName, labelName, buttonName}){
             
             </div>
             <div>
-              <img src={imageUrl} />
+              {isLoading ? (
+                <p>Cargando...</p>
+              ) : (
+                <img src={imageUrl} height="250px" />
+              )}
             </div>
             </header>
   
